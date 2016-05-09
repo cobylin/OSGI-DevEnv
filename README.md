@@ -1,2 +1,2 @@
-# hello-world
-my first git repository
+# OSGI Development Environment
+
