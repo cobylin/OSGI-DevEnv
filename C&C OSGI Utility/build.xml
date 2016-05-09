@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="dist beta" basedir=".">
+	
+	<target name="init">
+		
+		<property name="bundle_base" value="${basedir}"/>
+		<property name="target_dir" value="${bundle_base}"/>
+		
+		<tstamp/>
+		<loadproperties srcfile="${bundle_base}/build.properties"/>
+		<loadproperties srcfile="${bundle_base}/META-INF/MANIFEST.MF"/>
+		<path id="bundle_classpath">
+			<fileset dir="bundle"/>
+			<fileset dir="bin"/>
+		</path>
+		
+		<property name="bundle_name" value="${Bundle-Name}"/>
+		<property name="bundle_package" value="${Bundle-SymbolicName}"/>
+		<property name="bundle_version" value="${Bundle-Version}"/>
+		<property name="bundle_source" value="${bundle_base}/${source..}"/>
+		<property name="bundle_output" value="${bundle_base}/${output..}"/>
+		<property name="bundle_jtarget" value="${Bundle-RequiredExecutionEnvironment}"/>
+		<property name="bundle_manifest" value="${bundle_base}/META-INF/MANIFEST.MF"/>
+		
+		<script language="javascript"> <![CDATA[
+			sentence = project.getProperty("bundle_jtarget");
+			sentence = sentence.split('-');
+			project.setProperty("bundle_jtarget",sentence[1]);
+		]]></script>
+		
+		<echo message="Create Bundle[${bundle_name}] Pack Environment"/>
+		<echo message="Bundle Directory:	${bundle_base}"/>
+		<echo message="Bundle Version:		${bundle_version}"/>
+		<echo message="Bundle Package:		${bundle_package}"/>
+		<echo message="bundle Target Java:	${bundle_jtarget}"/>
+		<echo message="Source Directory:	${bundle_source}"/>
+		<echo message="Output Directory:	${bundle_output}"/>
+		<echo message="Jar MANIFEST File:	${bundle_manifest}"/>
+		<echo message="--------------------Done--------------------"/>
+	</target>
+	
+	<target name="init beta" depends="init">
+		<property name="bundle_jarname" value="${Bundle-SymbolicName}-${bundle_version}.jar"/>
+	</target>
+	
+	<target name="init release" depends="init">
+		<property name="bundle_jarname" value="${Bundle-SymbolicName}-${bundle_version}-R${DSTAMP}.jar"/>
+	</target>
+	
+	<target name="init GA" depends="init">
+		<property name="bundle_jarname" value="${Bundle-SymbolicName}-${bundle_version}.jar"/>
+	</target>
+	
+	<target name="compile" depends="init">
+		<echo message="Compiling Bundle[${bundle_name}] ${bundle_version}"/>
+		
+		<delete dir="${bundle_output}" includes="*"/>
+		
+		<javac target="${bundle_jtarget}"  source="${bundle_jtarget}" classpathref="bundle_classpath" bootclasspath="java.home"
+			srcdir="${bundle_source}" destdir="${bundle_output}"
+			sourcepath=""
+			includeantruntime="off" debug="off">
+		</javac>
+		
+		<echo message="--------------------Done--------------------"/>
+	</target>
+	
+	<target name="delete">
+		<delete dir="${target_dir}" includes="${bundle_package}-*.jar"/>
+	</target>	
+	
+	<target name="package" depends="delete">
+		<echo message="Packing Bundle[${bundle_name}] Version: ${bundle_version}"/>
+		<echo message="Jar File Name:		${bundle_jarname}"/>
+		
+		<jar jarfile="${target_dir}/${bundle_jarname}"
+			basedir="${bundle_output}"
+			manifest="${bundle_manifest}">
+			
+			<fileset dir="${bundle_base}" includes="${bin.includes}"></fileset>
+			
+		</jar>
+		
+		<echo message="--------------------Done--------------------"/>
+	</target>	
+
+
+	<target name="dist beta" depends="init beta, package" description="Beta Version">
+		<echo message="--------------------Done--------------------"/>
+	</target>
+	
+	<target name="dist release" depends="init release, package" description="Beta Version">
+		<echo message="--------------------Done--------------------"/>
+	</target>
+	
+	<target name="dist GA" depends="init GA, package" description="GA Version">
+		<echo message="--------------------Done--------------------"/>
+	</target>
+
+</project>

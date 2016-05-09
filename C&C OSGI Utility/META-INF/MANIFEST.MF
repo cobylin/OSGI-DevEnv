@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: C&C OSGI Utility
+Bundle-SymbolicName: cc.util
+Bundle-Version: 1.0.0
+Bundle-Vendor: Coby
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
