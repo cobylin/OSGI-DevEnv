@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Restlet_Test
+Bundle-SymbolicName: Restlet_Test
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: restlet.test.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Import-Package: org.osgi.framework;version="1.3.0",
+ org.restlet,
+ org.restlet.data,
+ org.restlet.resource
